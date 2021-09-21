@@ -1,0 +1,97 @@
+<router-outlet>
+<app-header></app-header>
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                  <section class="content-header">
+                    <ol class="breadcrumb">
+                      <li class="active">Dashboard</li>
+                    </ol>
+                  </section>
+                  <div class="row">
+                  <!-- users -->
+                  <div class="col-md-4">
+                    <a routerLink="/driver">
+                        <div class="emp wow bounceInDown  animated" style="visibility: visible; animation-name: bounceInDown;">
+                            <ul class="ul-list unstyle mb-0">
+                                <li>
+                                    <div class="bg-blue">
+                                        <img src="assets/images/u-em.png" class="image-fluid">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="content">
+                                        <p>Drivers</p>
+                                        <span>{{ driver }}</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        </a>
+                    </div>
+                    <!-- users -->
+
+                    <!-- vehicle -->
+                    <div class="col-md-4">
+                      <a routerLink="/vehicle">
+                          <div class="emp wow bounceInDown  animated" style="visibility: visible; animation-name: bounceInDown;">
+                              <ul class="ul-list unstyle mb-0">
+                                  <li>
+                                      <div class="bg-blue">
+                                          <img src="assets/images/u-em.png" class="image-fluid">
+                                      </div>
+                                  </li>
+                                  <li>
+                                      <div class="content">
+                                          <p>Vehicle</p>
+                                          <span>{{ vehicle }}</span>
+                                      </div>
+                                  </li>
+                              </ul>
+                          </div>
+                          </a>
+                      </div>
+                      <!-- vehicle -->
+
+                      <!-- vehicle -->
+                      <div class="col-md-4">
+                        <a routerLink="/customer">
+                            <div class="emp wow bounceInDown  animated" style="visibility: visible; animation-name: bounceInDown;">
+                                <ul class="ul-list unstyle mb-0">
+                                    <li>
+                                        <div class="bg-blue">
+                                            <img src="assets/images/u-em.png" class="image-fluid">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="content">
+                                            <p>Customer</p>
+                                            <span>{{ customer }}</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            </a>
+                        </div>
+                        <!-- vehicle -->
+
+
+
+
+
+                  </div>
+                </div>
+                <!--.col-->
+
+                <!--.col-->
+            </div>
+            <!--.row-->
+
+
+        </div>
+        <!--.container-fluid-->
+    </div>
+    <!--.page-content-->
+    <!-- <app-footer></app-footer> -->
+    </router-outlet>

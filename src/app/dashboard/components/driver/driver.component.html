@@ -1,0 +1,412 @@
+<router-outlet>
+<app-header></app-header>
+<div class="loader_panel" *ngIf="loader == 1" >
+<img src="assets/images/preloader.gif">
+</div>
+    <div class="page-content">
+        <div class="container-fluid">
+
+          <section class="content-header">
+            <ol class="breadcrumb">
+              <li class="active">Drivers</li>
+            </ol>
+          </section>
+          <!-- search -->
+
+
+          <div class="refer-btn">
+              <a class="btn btn-rounded" (click)="openaddmodal()">Add Driver</a>
+          </div>
+
+
+
+            <div class="table-responsive table-sec">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%">S.No</th>
+                            <th style="width: 10%">First Name</th>
+                            <th style="width: 10%">Last Name</th>
+                            <th style="width: 10%">Email</th>
+                            <th style="width: 13%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="doctordata" *ngIf="listing.length != 0 ">
+<!--  -->
+                        <tr class="data"  *ngFor="let list of listing | paginate: { itemsPerPage: 10, currentPage: p ,totalItems: totalItem } ;let i = index">
+                            <td>{{ start + i }}</td>
+                            <td>{{ list.firstName }}</td>
+                            <td>{{ list.lastName }}</td>
+                            <td>{{ list.email }}</td>
+
+                            <td>
+                             <a (click)="view(list.id)" ><i class="fa fa-eye" aria-hidden="true"></i></a>
+                             <a (click)="edit(list.id)" ><i class="fa fa-edit"></i></a>
+                             <a (click)="delete(list.id)" class="doctordelete" ><i class="fa fa-trash" aria-hidden="true"></i></a>
+                             </td>
+                        </tr>
+
+                    </tbody>
+                    <tbody *ngIf="listing.length == 0">
+                      <tr ><td colspan="5">No Record Found</td></tr>
+
+                      </tbody>
+                </table>
+            </div>
+             <div *ngIf="totalItem > 10" id="pagination_per_page_row">
+        <div class="row">
+        <div class="col-md-6">
+          <pagination-controls (pageChange)="p = getdriver($event)"></pagination-controls>
+
+        </div>
+      </div>
+      </div>
+        </div>
+    </div>
+
+
+    <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Driver</h4>
+      </div>
+      <form [formGroup]="angForm" novalidate (ngSubmit)="formSubmit(angForm.value)">
+      <div class="modal-body">
+        <div class="row">
+        <div class="col-md-6">
+        <div class="form-group">
+          <label>Driver Id <span class="red">*</span></label>
+          <input type="text" placeholder="Please enter driver Id" formControlName="driverId" class="form-control" name="driverId">
+          <div *ngIf="angForm.controls['driverId'].hasError('required') && (angForm.controls['driverId'].dirty || angForm.controls['driverId'].touched ||  submitted )" class="text-danger">
+               Driver Id is required.
+            </div>
+          </div>
+          </div>
+            <div class="col-md-6">
+        <div class="form-group">
+          <label>First Name <span class="red">*</span></label>
+          <input type="text" placeholder="Please enter first name" formControlName="firstName" class="form-control" name="firstName">
+          <div *ngIf="angForm.controls['firstName'].hasError('required') && (angForm.controls['firstName'].dirty || angForm.controls['firstName'].touched ||  submitted )" class="text-danger">
+               First name is required.
+            </div>
+          </div>
+        </div>
+          <div class="col-md-6">
+          <div class="form-group">
+            <label>Last Name <span class="red">*</span></label>
+            <input type="text" placeholder="Please enter last name" formControlName="lastName" class="form-control" name="lastName">
+            <div *ngIf="angForm.controls['lastName'].hasError('required') && (angForm.controls['lastName'].dirty || angForm.controls['lastName'].touched ||  submitted )" class="text-danger">
+                 Last name is required.
+              </div>
+            </div>
+          </div>
+            <div class="col-md-6">
+          <div class="form-group">
+            <label>Email <span class="red">*</span></label>
+            <input type="text" placeholder="Please enter email" formControlName="email" class="form-control" name="email">
+            <div *ngIf="angForm.controls['email'].hasError('required') && (angForm.controls['email'].dirty || angForm.controls['email'].touched ||  submitted )" class="text-danger">
+                 Email is required.
+              </div>
+              <div *ngIf="!angForm.controls['email'].hasError('required') && angForm.controls['email'].hasError('email')" class="text-danger">
+                Please enter valid email.
+              </div>
+
+            </div>
+          </div>
+            <div class="col-md-6">
+          <div class="form-group">
+            <label>Permit Expiry Date <span class="red">*</span></label>
+            <input type="text"  placeholder="Expiry date" formControlName="permitExpiryDate" #permitExpiryDatePicker [(ngModel)]="permitExpiryDatePickerValue" (focusout)="permitExpiryDatePickerValue=permitExpiryDatePicker.value"  class="form-control  datepicker" name="permitExpiryDate">
+
+
+            <div *ngIf="angForm.controls['permitExpiryDate'].hasError('required') && (angForm.controls['permitExpiryDate'].dirty || angForm.controls['permitExpiryDate'].touched ||  submitted )" class="text-danger">
+                 Permit Expiry Date is required.
+              </div>
+
+            </div>
+          </div>
+            <div class="col-md-6">
+          <div class="form-group">
+            <label>Licence No <span class="red">*</span></label>
+            <input type="text" placeholder="Please enter licence no" formControlName="licenceNo" class="form-control" name="licenceNo">
+            <div *ngIf="angForm.controls['licenceNo'].hasError('required') && (angForm.controls['licenceNo'].dirty || angForm.controls['licenceNo'].touched ||  submitted )" class="text-danger">
+                 Licence no  is required.
+              </div>
+
+            </div>
+          </div>
+            <div class="col-md-6">
+          <div class="form-group">
+            <label>Licence Expiry Date <span class="red">*</span></label>
+            <input type="text" placeholder="Please enter licence no" formControlName="licenceExpiryDate" #led [(ngModel)]="ledp" (focusout)="ledp=led.value" class="form-control datepicker " name="licenceExpiryDate">
+            <div *ngIf="angForm.controls['licenceExpiryDate'].hasError('required') && (angForm.controls['licenceExpiryDate'].dirty || angForm.controls['licenceExpiryDate'].touched ||  submitted )" class="text-danger">
+                 Licence expiry date is required.
+              </div>
+
+            </div>
+          </div>
+            <div class="col-md-6">
+          <div class="form-group">
+            <label>Hiring Date <span class="red">*</span></label>
+            <input type="text" placeholder="Please select hiring date" #hd [(ngModel)]="hdp" (focusout)="hdp=hd.value" formControlName="hiringDate" class="form-control  datepicker" name="hiringDate">
+            <div *ngIf="angForm.controls['hiringDate'].hasError('required') && (angForm.controls['hiringDate'].dirty || angForm.controls['hiringDate'].touched ||  submitted )" class="text-danger">
+                 Hiring date is required.
+              </div>
+            </div>
+           </div>
+
+           <div class="col-md-6">
+         <div class="form-group">
+           <label>Driver Image <span class="red">*</span></label>
+           <input #fileInput type="file" (change)="updateProfileimage($event)" accept="image/*"   class="form-control img" name="file">
+           <div *ngIf="angForm.controls['driverImage'].hasError('required') && (angForm.controls['driverImage'].dirty || angForm.controls['driverImage'].touched ||  submitted )" class="text-danger">
+                Driver Image is required.
+             </div>
+              <img height="100" width="100" *ngIf="driverPic != ''" [src]="Url+ 'drivers/' + driverPic" alt="" class="img-thumbnail">
+
+           </div>
+          </div>
+           <div class="col-md-6">
+         <div class="form-group">
+           <label>BCDL <span class="red">*</span></label>
+           <input #fileInput1 type="file" (change)="bdclProfileimage($event)" accept="image/*"   class="form-control img" name="file">
+           <div *ngIf="angForm.controls['bcdl'].hasError('required') && (angForm.controls['bcdl'].dirty || angForm.controls['bcdl'].touched ||  submitted )" class="text-danger">
+                BCDL Image is required.
+             </div>
+             <img height="100" width="100" *ngIf="bdclPic != ''" [src]="Url+ 'bdcl/' + bdclPic" alt="" class="img-thumbnail">
+
+           </div>
+          </div>
+
+
+           </div>
+            </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" >Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- edit driver -->
+<div id="edit" class="modal fade" role="dialog">
+<div class="modal-dialog">
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Edit Driver</h4>
+  </div>
+  <form [formGroup]="angForm1" novalidate (ngSubmit)="update(angForm1.value)">
+  <div class="modal-body">
+    <div class="row">
+    <div class="col-md-6">
+    <div class="form-group">
+      <label>Driver Id <span class="red">*</span></label>
+      <input type="text" placeholder="Please enter driver Id" formControlName="driverId" class="form-control" name="driverId">
+      <div *ngIf="angForm1.controls['driverId'].hasError('required') && (angForm1.controls['driverId'].dirty || angForm1.controls['driverId'].touched ||  submitted )" class="text-danger">
+           Driver Id is required.
+        </div>
+      </div>
+      </div>
+        <div class="col-md-6">
+    <div class="form-group">
+      <label>First Name <span class="red">*</span></label>
+      <input type="text" placeholder="Please enter first name" formControlName="firstName" class="form-control" name="firstName">
+      <div *ngIf="angForm1.controls['firstName'].hasError('required') && (angForm1.controls['firstName'].dirty || angForm1.controls['firstName'].touched ||  submitted )" class="text-danger">
+           First name is required.
+        </div>
+      </div>
+    </div>
+      <div class="col-md-6">
+      <div class="form-group">
+        <label>Last Name <span class="red">*</span></label>
+        <input type="text" placeholder="Please enter last name" formControlName="lastName" class="form-control" name="lastName">
+        <div *ngIf="angForm1.controls['lastName'].hasError('required') && (angForm1.controls['lastName'].dirty || angForm1.controls['lastName'].touched ||  submitted )" class="text-danger">
+             Last name is required.
+          </div>
+        </div>
+      </div>
+        <div class="col-md-6">
+      <div class="form-group">
+        <label>Email <span class="red">*</span></label>
+        <input type="text" placeholder="Please enter email" formControlName="email" class="form-control" name="email">
+        <div *ngIf="angForm1.controls['email'].hasError('required') && (angForm1.controls['email'].dirty || angForm1.controls['email'].touched ||  submitted )" class="text-danger">
+             Email is required.
+          </div>
+          <div *ngIf="!angForm1.controls['email'].hasError('required') && angForm1.controls['email'].hasError('email')" class="text-danger">
+            Please enter valid email.
+          </div>
+
+        </div>
+      </div>
+        <div class="col-md-6">
+      <div class="form-group">
+        <label>Permit Expiry Date <span class="red">*</span></label>
+        <input type="text"  placeholder="Expiry date" formControlName="permitExpiryDate" #permitExpiryDatePicker [(ngModel)]="permitExpiryDatePickerValue" (focusout)="permitExpiryDatePickerValue=permitExpiryDatePicker.value" class="form-control permit1 datepicker" name="permitExpiryDate">
+
+
+        <div *ngIf="angForm1.controls['permitExpiryDate'].hasError('required') && (angForm1.controls['permitExpiryDate'].dirty || angForm1.controls['permitExpiryDate'].touched ||  submitted )" class="text-danger">
+             Permit Expiry Date is required.
+          </div>
+
+        </div>
+      </div>
+        <div class="col-md-6">
+      <div class="form-group">
+        <label>Licence No <span class="red">*</span></label>
+        <input type="text" placeholder="Please enter licence no" formControlName="licenceNo" class="form-control" name="licenceNo">
+        <div *ngIf="angForm1.controls['licenceNo'].hasError('required') && (angForm1.controls['licenceNo'].dirty || angForm1.controls['licenceNo'].touched ||  submitted )" class="text-danger">
+             Licence no  is required.
+          </div>
+
+        </div>
+      </div>
+        <div class="col-md-6">
+      <div class="form-group">
+        <label>Licence Expiry Date <span class="red">*</span></label>
+        <input type="text" placeholder="Please enter licence no" formControlName="licenceExpiryDate" #led [(ngModel)]="ledp" (focusout)="ledp=led.value" class="form-control licence1 datepicker" name="licenceExpiryDate">
+        <div *ngIf="angForm1.controls['licenceExpiryDate'].hasError('required') && (angForm1.controls['licenceExpiryDate'].dirty || angForm1.controls['licenceExpiryDate'].touched ||  submitted )" class="text-danger">
+             Licence expiry date is required.
+          </div>
+
+        </div>
+      </div>
+        <div class="col-md-6">
+      <div class="form-group">
+        <label>Hiring Date <span class="red">*</span></label>
+        <input type="text" placeholder="Please select hiring date" #hd [(ngModel)]="hdp" (focusout)="hdp=hd.value" formControlName="hiringDate" class="form-control hiring1 datepicker" name="hiringDate">
+        <div *ngIf="angForm1.controls['hiringDate'].hasError('required') && (angForm1.controls['hiringDate'].dirty || angForm1.controls['hiringDate'].touched ||  submitted )" class="text-danger">
+             Hiring date is required.
+          </div>
+        </div>
+       </div>
+
+       <div class="col-md-6">
+     <div class="form-group">
+       <label>Driver Image <span class="red">*</span></label>
+       <input #fileInput2 type="file" (change)="updateProfileimage1($event)" accept="image/*"   class="form-control img" name="file">
+       <div *ngIf="angForm1.controls['driverImage'].hasError('required') && (angForm1.controls['driverImage'].dirty || angForm1.controls['driverImage'].touched ||  submitted )" class="text-danger">
+            Driver Image is required.
+         </div>
+         <img height="100" width="100" *ngIf="driverPic1 != ''" [src]="Url+ 'drivers/' + driverPic1" alt="" class="img-thumbnail">
+
+
+       </div>
+      </div>
+       <div class="col-md-6">
+     <div class="form-group">
+       <label>BCDL <span class="red">*</span></label>
+       <input #fileInput3 type="file" (change)="bdclProfileimage1($event)" accept="image/*"   class="form-control img" name="file">
+       <div *ngIf="angForm1.controls['bcdl'].hasError('required') && (angForm1.controls['bcdl'].dirty || angForm1.controls['bcdl'].touched ||  submitted )" class="text-danger">
+            BCDL Image is required.
+         </div>
+         <img height="100" width="100" *ngIf="bdclPic1 != ''" [src]="Url+ 'bdcl/' + bdclPic1" alt="" class="img-thumbnail">
+
+
+       </div>
+      </div>
+
+
+       </div>
+        </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success" >Update</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+  </div>
+  </form>
+</div>
+
+</div>
+</div>
+
+<!-- edit Driver -->
+<!-- delete modal-->
+               <div class="modal fade"  id="Delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+
+
+                      <h4 class="modal-title" id="myModalLabel">Are you sure you want to delete this record ?</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                      <a (click)="deleterecord()" class="btn btn-danger" id="yes">Yes</a>
+
+                      <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+               </div>
+               <!-- delete modal -->
+
+               <!-- view modal -->
+               <div id="view" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+               <div class="modal-content">
+                 <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal">&times;</button>
+                   <h4 class="modal-title"> Driver Details</h4>
+                 </div>
+                 <div class="modal-body">
+
+
+                   <div class="form-group">
+                       <b>First Name :</b> {{ viewdata.firstName }}
+                     </div>
+
+                     <div class="form-group">
+                       <b>Last Name :</b> {{ viewdata.lastName }}
+
+                     </div>
+                     <div class="form-group">
+                       <b>Email :</b> {{ viewdata.email }}
+                     </div>
+                     <div *ngIf="viewdata.driver_info" class="form-group">
+                       <b>Permit Expiry Date :</b> {{ viewdata.driver_info.permitExpiryDate   }}
+                      </div>
+                     <div *ngIf="viewdata.driver_info" class="form-group">
+                       <b>Licence No :</b>  {{ viewdata.driver_info.licenceNo }}
+                     </div>
+
+                     <div *ngIf="viewdata.driver_info" class="form-group">
+                       <b>Licence Expiry Date : </b> {{ viewdata.driver_info.licenceExpiryDate 	 }}
+                     </div>
+                     <div *ngIf="viewdata.driver_info" class="form-group">
+                       <b>Hiring Date :</b> {{ viewdata.driver_info.hiringDate 	 }}
+                      </div>
+                    <div *ngIf="viewdata.driver_info" class="form-group">
+
+                      <b>Driver Image :</b> <img height="100" width="100" *ngIf="viewdata.driver_info.driverImage != ''" [src]="Url+ 'drivers/' + viewdata.driver_info.driverImage" alt="" class="img-thumbnail">
+                     </div>
+                    <div *ngIf="viewdata.driver_info" class="form-group">
+                      <b>BCDL :</b> <img height="100" width="100" *ngIf="viewdata.driver_info.bcdl != ''" [src]="Url+ 'bdcl/' + viewdata.driver_info.bcdl" alt="" class="img-thumbnail">
+                     </div>
+                      </div>
+
+
+                 <div class="modal-footer">
+                   <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                 </div>
+               </div>
+
+             </div>
+           </div>
+               <!-- view modal -->
+</router-outlet>

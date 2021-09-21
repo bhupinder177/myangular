@@ -1,0 +1,53 @@
+<div class="login_panel">
+  <div class="login_bx">
+    <div class="login_logo">
+      <img src="assets/images/logo.png" alt=""/>
+    </div>
+    <h3>Register</h3>
+    <form [formGroup]="angForm" novalidate (ngSubmit)="formSubmit(angForm.value)">
+      <div class="form-group">
+        <input class="form-control" formControlName="fullName" type="text" placeholder="Please enter name"/>
+        <div *ngIf="angForm.controls['fullName'].hasError('required') && (angForm.controls['fullName'].dirty || angForm.controls['fullName'].touched || submitted ) " class="text-danger">
+          Name is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <input class="form-control" formControlName="userName" type="text" placeholder="Please enter Username"/>
+        <div *ngIf="angForm.controls['userName'].hasError('required') && (angForm.controls['userName'].dirty || angForm.controls['userName'].touched || submitted ) " class="text-danger">
+          Username is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <input class="form-control" formControlName="userEmail" type="text" placeholder="Email"/>
+        <div *ngIf="angForm.controls['userEmail'].hasError('required') && (angForm.controls['userEmail'].dirty || angForm.controls['userEmail'].touched || submitted ) " class="text-danger">
+          Email is required.
+        </div>
+        <div *ngIf="!angForm.controls['userEmail'].hasError('required') && angForm.controls['userEmail'].hasError('email')" class="text-danger">
+          Email is not valid.
+        </div>
+      </div>
+      <div formGroupName="account" >
+        <div class="form-group">
+          <input class="form-control" formControlName="userPassword" type="password" placeholder="Password"/>
+          <div *ngIf="angForm.controls['account'].controls['userPassword'].hasError('required') && (angForm.controls['account'].controls['userPassword'].dirty || angForm.controls['account'].controls['userPassword'].touched || submitted ) " class="text-danger">
+            Password is required.
+          </div>
+        </div>
+        <div class="form-group">
+          <input class="form-control" formControlName="confirmuserPassword" type="password" placeholder="Confirm Password"/>
+          <div *ngIf="angForm.controls['account'].controls['confirmuserPassword'].hasError('required') && (angForm.controls['account'].controls['userPassword'].dirty || angForm.controls['account'].controls['confirmuserPassword'].touched || submitted )" class="text-danger">
+            Confirm password is required.
+          </div>
+          	<div class="text-danger" *ngIf="!angForm.controls['account'].controls['userPassword'].hasError('required') && !angForm.controls['account'].controls['confirmuserPassword'].hasError('required')   && !angForm.controls['account'].valid && submitted">Password not matched.</div>
+        </div>
+      </div>
+      <div class="form-group text-right">
+        <a routerLink="/login" class="forgot">Login</a>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </form>
+
+  </div>
+</div>
